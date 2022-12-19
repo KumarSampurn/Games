@@ -34,9 +34,11 @@
   }
   .computer{
       padding-right: 5%;
+      margin-right: 10%;
   }
   .user{
       padding-left: 5%;
+      margin-left: 10%;
   }
   
   footer {

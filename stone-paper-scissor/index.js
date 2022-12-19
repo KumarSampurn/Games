@@ -1,9 +1,9 @@
-const computerChoiceDisplay = document.getElementById("computer-choice")
-const userChoiceDisplay = document.getElementById("user-choice")
-const resultDisplay = document.getElementById("result")
-
 const possibleChoices = document.querySelectorAll("button");
 // console.log(possibleChoices)
+
+var ele1= document.querySelector(".img1");
+var ele2= document.querySelector(".img2");
+var heading= document.querySelector("h1");
 
 let userChoice, computerChoice, result;
 let choices = ["Rock","Paper", "Scissors"];
@@ -11,9 +11,8 @@ let choices = ["Rock","Paper", "Scissors"];
 
 possibleChoices.forEach(possibleChoice => possibleChoice.addEventListener('click',(e)=>{
 userChoice = e.target.id;
-userChoiceDisplay.innerHTML=userChoice;
+ele2.setAttribute("src","images/"+userChoice+".png");
 generateComputerChoice()
-
 
 }))
 
@@ -22,32 +21,35 @@ function generateComputerChoice()
     const randomNumber = Math.floor(Math.random()*3);
     console.log(randomNumber);
     computerChoice= choices[randomNumber];
-    computerChoiceDisplay.innerHTML=computerChoice;
+    ele1.setAttribute("src","images/"+computerChoice+".png");
     winner()
 }
 
 function winner()
 {
     if(userChoice === computerChoice)
-        result = "Draw";
+        result = "Its a Draw!!";
 
         else if ( userChoice === "Rock" && computerChoice ==="Paper")
-        result = "Computer"
+        result = "🚩 Computer Wins!"
         
         else if ( userChoice === "Rock" && computerChoice ==="Scissors")
-        result = "User"
+        result = "User Wins! 🚩"
         
         else if ( userChoice === "Scissors" && computerChoice ==="Paper")
-        result = "User"
+        result = "User Wins! 🚩"
         
         else if ( userChoice === "Scissors" && computerChoice ==="Rock")
-        result = "Computer"
+        result = "🚩 Computer Wins!"
         
-        else if ( userChoice === "Rock" && computerChoice ==="Scissors")
-        result = "User"
+        else if ( userChoice === "Paper" && computerChoice ==="Scissors")
+        result = "🚩 Computer Wins!"
         
-        else if ( userChoice === "Rock" && computerChoice ==="Paper")
-        result = "Computer"
+        else if ( userChoice === "Paper" && computerChoice ==="Rock")
+        result = "User Wins! 🚩"
 
-        resultDisplay.innerHTML=result;
+        heading.innerHTML=result;
+        console.log("user" ,userChoice);
+        console.log("computer" ,computerChoice);
+
 }
