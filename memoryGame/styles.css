@@ -20,7 +20,7 @@ body {
 
 h1 ,h3,h6{
   margin: 30px;
-  font-family:  cursive;
+  font-family:  'Lobster',cursive;
   text-shadow: 5px 0 #232931;
   font-size: 7rem;
   color: #4ECCA3;
@@ -28,10 +28,12 @@ h1 ,h3,h6{
 
 h3{ 
     font-size: 6rem;
+    font-family: 'Indie Flower', cursive;
 }
 
 h6{
   font-size: 3rem;
+  font-family: 'Indie Flower', cursive;
 }
 
 footer {

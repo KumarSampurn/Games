@@ -116,8 +116,7 @@ function flipCard(){
 
     if (chosenCardArray.length >1 ) {
         setTimeout(checkMatch,400)
-    }
-    
+    }  
 }
 
 
@@ -131,7 +130,7 @@ function checkAllWhites(){
     {
         if(allImages[i].getAttribute("src") !== 'images/white.png')
         {
-            return
+            return;
         }
     }
     youWon()
