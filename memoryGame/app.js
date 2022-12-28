@@ -59,7 +59,7 @@ const gridDisplay = document.querySelector('#grid')
 
 let chosenCardArray=[]
 let chosenCardIdArray=[]
-let result=100
+let result=150
 
 function createBoard(){
     for( let i = 0; i< cardArray.length ; i++)
@@ -89,23 +89,26 @@ function checkMatch(){
         card2.setAttribute("src", "images/white.png")
         card1.removeEventListener("click",flipCard)
         card2.removeEventListener("click",flipCard)
+        displayScore()
+        checkAllWhites()
+        
     }
     else
     {
         card1.setAttribute("src", "images/blank.png")
         card2.setAttribute("src", "images/blank.png")   
         result= result -10;
+        displayScore()
+        if(result<=0)
+            youLose()
+            
     }
     
     
     chosenCardArray.pop()
     chosenCardArray.pop()
-    displayScore()
+    
 }
-
-
-
-
 
 function flipCard(){
     const cardId =this.getAttribute("id")
@@ -122,12 +125,36 @@ function flipCard(){
     
 }
 
-
-
 document.addEventListener("click", displayScore)
-
+let heading = document.getElementById("result")
 function displayScore(){
-    let heading = document.getElementById("result")
+    
     heading.innerHTML="Score :"+ result;
     document.removeEventListener("click", displayScore)
+}
+let allImages= document.getElementsByTagName("img")
+
+function checkAllWhites(){
+    
+    for( let i =0 ; i< allImages.length; i++)
+    {
+        if(allImages[i].getAttribute("src") !== 'images/white.png')
+        {
+            return
+        }
+    }
+    youWon()
+}
+
+function youWon(){
+    let parent = document.getElementById("grid")
+    parent.innerHTML= "<br><br><h3> Your Score is : "+ result + "</h3>"+"<br><h6> Refresh To play again</h6>"
+    
+    heading.innerHTML="You Won!!!";
+}
+function youLose(){
+    let parent = document.getElementById("grid")
+    parent.innerHTML= "<br><br><br><br><h3> Lmao Noob</h3>"+"<br><br><br><br><br><br><h6> Refresh To play again</h6>"
+    
+    heading.innerHTML="You Lost!!!";
 }
