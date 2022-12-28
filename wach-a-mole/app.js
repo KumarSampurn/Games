@@ -20,7 +20,7 @@ const heading = document.querySelector("#score")
 
 
 let result =0
-let currentTime=10
+let currentTime=30
 
 function randomSquare(){
     squares.forEach(square=>{
@@ -47,15 +47,17 @@ function checkMatch(){
 
 let timerId=null
 function moveMole(){
-    timerId=setInterval(randomSquare,550)
+    timerId=setInterval(randomSquare,582)
 }
 
 
 
 function displayScore(){
+    gridDisplay.setAttribute("style", "display: block");
     heading.textContent= "Game Over"
     gridDisplay.innerHTML=""
     gridDisplay.innerHTML="<h1> Your Score : "+ result+ "</h1><h6>Refresh to Start</h6>"
+    timeleft.innerHTML=""
 }
 
 
@@ -74,6 +76,8 @@ function countDown(){
 
 let startButton = document.getElementById("start")
 startButton.addEventListener("click",()=>{
+    heading.innerHTML="<h1> Score : "+ result + "</h1>"
+    timeleft.innerHTML="<h1>Time Left :" + currentTime + "</h1>";
     countDownTimerId = setInterval(countDown,1000)
     moveMole()
 }) 
