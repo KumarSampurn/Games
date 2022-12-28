@@ -1,45 +1,69 @@
 #grid{
-    width: 70%;
-    margin: auto;
-    text-align: center;
-    margin-top: 3rem;
-}
-
-.cardStyles{
-    margin: 5%;
-}
-
-.container {
   width: 70%;
   margin: auto;
   text-align: center;
+  margin-top: 3rem;
+}
+
+.cardStyles{
+  margin: 5%;
+}
+
+.container {
+width: 70%;
+margin: auto;
+text-align: center;
 }
 body {
-  background-color: #393E46;
+background-color: #393E46;
 }
 
 h1 ,h3,h6{
-  margin: 30px;
-  font-family:  'Lobster',cursive;
-  text-shadow: 5px 0 #232931;
-  font-size: 7rem;
-  color: #4ECCA3;
+margin: 30px;
+font-family:  'Lobster',cursive;
+text-shadow: 5px 0 #232931;
+font-size: 7rem;
+color: #4ECCA3;
 }
 
 h3{ 
-    font-size: 6rem;
-    font-family: 'Indie Flower', cursive;
+  font-size: 6rem;
+  font-family: 'Indie Flower', cursive;
 }
 
 h6{
-  font-size: 3rem;
-  font-family: 'Indie Flower', cursive;
+font-size: 3rem;
+font-family: 'Indie Flower', cursive;
 }
 
 footer {
-  margin-top: 5%;
-  color: #EEEEEE;
-  text-align: center;
-  font-family: 'Indie Flower', cursive;
+margin-top: 5%;
+color: #EEEEEE;
+text-align: center;
+font-family: 'Indie Flower', cursive;
 
+}
+
+@media screen and (max-width: 480px) {
+
+#grid{
+width: auto;
+margin: auto;
+text-align: center;
+margin-top: 1rem;
+}
+.container {
+width: auto;
+margin: auto;
+text-align: center;
+}
+
+img{
+width: 20%;
+}
+
+h1 ,h3,h6{
+font-size: 3.5rem;
+color: #4ECCA3;
+}
 }
