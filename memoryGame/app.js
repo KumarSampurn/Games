@@ -83,7 +83,7 @@ function checkMatch(){
     let card1=document.getElementById(card1Id)
     let card2=document.getElementById(card2Id)
     
-    if(chosenCardArray[0]===chosenCardArray[1])
+    if((chosenCardArray[0]===chosenCardArray[1]) && (card1Id != card2Id) )
     {
         card1.setAttribute("src", "images/white.png")
         card2.setAttribute("src", "images/white.png")
