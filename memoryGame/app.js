@@ -59,7 +59,7 @@ const gridDisplay = document.querySelector('#grid')
 
 let chosenCardArray=[]
 let chosenCardIdArray=[]
-
+let result=100
 
 function createBoard(){
     for( let i = 0; i< cardArray.length ; i++)
@@ -94,13 +94,13 @@ function checkMatch(){
     {
         card1.setAttribute("src", "images/blank.png")
         card2.setAttribute("src", "images/blank.png")   
-        
+        result= result -10;
     }
     
     
     chosenCardArray.pop()
     chosenCardArray.pop()
-    
+    displayScore()
 }
 
 
@@ -124,3 +124,10 @@ function flipCard(){
 
 
 
+document.addEventListener("click", displayScore)
+
+function displayScore(){
+    let heading = document.getElementById("result")
+    heading.innerHTML="Score :"+ result;
+    document.removeEventListener("click", displayScore)
+}
