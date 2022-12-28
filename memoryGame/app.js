@@ -120,7 +120,7 @@ function flipCard(){
     this.setAttribute("src",cardArray[cardId].img)
 
     if (chosenCardArray.length >1 ) {
-        setTimeout(checkMatch,500)
+        setTimeout(checkMatch,400)
     }
     
 }
@@ -155,6 +155,5 @@ function youWon(){
 function youLose(){
     let parent = document.getElementById("grid")
     parent.innerHTML= "<br><br><br><br><h3> Lmao Noob</h3>"+"<br><br><br><br><br><br><h6> Refresh To play again</h6>"
-    
     heading.innerHTML="You Lost!!!";
 }
