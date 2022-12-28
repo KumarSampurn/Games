@@ -1,10 +1,45 @@
 #grid{
-    width: 600px;
-    height: 400px;
-    display: flex;
-    flex-wrap: wrap;
+    width: 70%;
+    margin: auto;
+    text-align: center;
+    margin-top: 3rem;
 }
 
 .cardStyles{
-    padding: 2.5%;
+    margin: 5%;
+}
+
+.container {
+    width: 70%;
+    margin: auto;
+    text-align: center;
+  }
+  
+  
+body {
+  background-color: #393E46;
+}
+
+h1 ,h6,h5,h4,h3{
+  margin: 30px;
+  font-family: 'Lobster', cursive;
+  text-shadow: 5px 0 #232931;
+  font-size: 7rem;
+  color: #4ECCA3;
+}
+
+p {
+  font-size: 2rem;
+  color: #4ECCA3;
+  font-family: 'Indie Flower', cursive;
+}
+
+
+
+footer {
+  margin-top: 5%;
+  color: #EEEEEE;
+  text-align: center;
+  font-family: 'Indie Flower', cursive;
+
 }
