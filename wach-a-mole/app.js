@@ -45,7 +45,7 @@ function checkMatch(){
     }
     score.textContent=result
 }
-
+let timerId=null
 function moveMole(){
     timeId =null
     timerId=setInterval(randomSquare,550)
@@ -54,9 +54,21 @@ moveMole()
 
 randomSquare()
 
+currentTime=10
+
+function displayScore(){
+    console.log("Final Score is : " + result)
+}
+
 function countDown(){
     currentTime--;
     timeleft.textContent=currentTime;
+    if(currentTime===0)
+    {
+        displayScore()
+        clearInterval(countDownTimerId)
+        clearInterval(timerId)
+    }
 }
 
 
