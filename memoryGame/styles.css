@@ -1,0 +1,10 @@
+#grid{
+    width: 600px;
+    height: 400px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.cardStyles{
+    padding: 2.5%;
+}
