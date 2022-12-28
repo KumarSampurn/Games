@@ -50,9 +50,7 @@ function moveMole(){
     timeId =null
     timerId=setInterval(randomSquare,550)
 }
-moveMole()
 
-randomSquare()
 
 currentTime=10
 
@@ -63,14 +61,19 @@ function displayScore(){
 function countDown(){
     currentTime--;
     timeleft.textContent=currentTime;
-    if(currentTime===0)
+    if(currentTime<1)
     {
         displayScore()
         clearInterval(countDownTimerId)
         clearInterval(timerId)
     }
 }
+let countDownTimerId =null
 
 
 
-let countDownTimerId = setInterval(countDown,1000)
+let startButton = document.getElementById("start")
+startButton.addEventListener("click",()=>{
+    countDownTimerId = setInterval(countDown,1000)
+    moveMole()
+}) 

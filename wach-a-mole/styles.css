@@ -1,18 +1,117 @@
-#grid{
+/* #grid{
     width: 606px;
     height: 606px;
     display: flex;
     flex-wrap: wrap;
-}
+} */
 
 .square{
     
-    height:200px;
-    width: 200px;
+    height:150px;
+    width: 150px;
     border : solid black 1px;
+    margin: 5%;
+    border-radius: 50%;
 }
 
 .mole
 {
-    background: blue;
+    background-image: url("diglett-seeklogo.com.svg");
+    background-repeat:   no-repeat;
+}
+
+button{
+  background:    #4ecca3;
+  border-radius: 17px;
+  width:         200px;
+  height:        50px;
+  color:         #ffffff;
+  display:       inline-block;
+  font:          normal bold 26px/50px 'Indie Flower', cursive;
+  text-align:    center;
+  text-shadow:   1px 1px #000000;
+  margin: 2% 5%;
+}
+  
+
+button:hover{
+  transition : 284ms;
+  /* padding: 10px 50px; */
+  transform : translateY(-0px);
+  background-color: #0bb076;
+  color: #5b6370;
+  border: none;
+}
+
+
+#grid{
+  width: 70%;
+  margin: auto;
+  text-align: center;
+  margin-top: 3rem;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cardStyles{
+  margin: 2.5%;
+}
+
+.container {
+  width: 70%;
+  margin: auto;
+  text-align: center;
+}
+body {
+  background-color: #393E46;
+}
+
+h1 ,h3,h6{
+   margin: 30px;
+   font-family:  'Lobster',cursive;
+   text-shadow: 5px 0 #232931;
+   font-size: 3.5rem;
+   color: #4ECCA3;
+}
+
+h3{ 
+  font-size: 6rem;
+  font-family: 'Indie Flower', cursive;
+}
+
+h6{
+font-size: 3rem;
+font-family: 'Indie Flower', cursive;
+}
+
+footer {
+margin-top: 5%;
+color: #EEEEEE;
+text-align: center;
+font-family: 'Indie Flower', cursive;
+
+}
+
+@media screen and (max-width: 480px) {
+
+#grid{
+width: auto;
+margin: auto;
+text-align: center;
+margin-top: 1rem;
+}
+.container {
+width: auto;
+margin: auto;
+text-align: center;
+}
+
+img{
+width: 20%;
+}
+
+h1 ,h3,h6{
+font-size: 3.5rem;
+color: #4ECCA3;
+}
 }
