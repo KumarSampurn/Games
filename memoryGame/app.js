@@ -1,3 +1,6 @@
+let chosenCardArray=[]
+let chosenCardIdArray=[]
+
 const cardArray =[
     {
         name : 'cheeseburger',
@@ -49,17 +52,16 @@ const cardArray =[
     },   
 ]
 
+let heading = document.getElementById("result")
+let allImages= document.getElementsByTagName("img")
+const gridDisplay = document.querySelector('#grid')
+document.addEventListener("click", displayScore)
+let result=150
+
+
 for (let index = 0; index < 5; index++) {
     cardArray.sort(()=> Math.random() - 0.5)
 }
-
-console.log(cardArray)
-
-const gridDisplay = document.querySelector('#grid')
-
-let chosenCardArray=[]
-let chosenCardIdArray=[]
-let result=150
 
 function createBoard(){
     for( let i = 0; i< cardArray.length ; i++)
@@ -72,8 +74,6 @@ function createBoard(){
         gridDisplay.appendChild(card)
     }
 }
-createBoard()
-
 
 function checkMatch(){
     
@@ -90,8 +90,7 @@ function checkMatch(){
         card1.removeEventListener("click",flipCard)
         card2.removeEventListener("click",flipCard)
         displayScore()
-        checkAllWhites()
-        
+        checkAllWhites()  
     }
     else
     {
@@ -100,14 +99,10 @@ function checkMatch(){
         result= result -10;
         displayScore()
         if(result<=0)
-            youLose()
-            
+            youLose()      
     }
-    
-    
     chosenCardArray.pop()
     chosenCardArray.pop()
-    
 }
 
 function flipCard(){
@@ -125,17 +120,13 @@ function flipCard(){
     
 }
 
-document.addEventListener("click", displayScore)
-let heading = document.getElementById("result")
+
 function displayScore(){
-    
     heading.innerHTML="Score :"+ result;
     document.removeEventListener("click", displayScore)
 }
-let allImages= document.getElementsByTagName("img")
 
 function checkAllWhites(){
-    
     for( let i =0 ; i< allImages.length; i++)
     {
         if(allImages[i].getAttribute("src") !== 'images/white.png')
@@ -157,3 +148,4 @@ function youLose(){
     parent.innerHTML= "<br><br><br><br><h3> Lmao Noob</h3>"+"<br><br><br><br><br><br><h6> Refresh To play again</h6>"
     heading.innerHTML="You Lost!!!";
 }
+createBoard()

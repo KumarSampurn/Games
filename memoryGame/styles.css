@@ -10,45 +10,29 @@
 }
 
 .container {
-    width: 70%;
-    margin: auto;
-    text-align: center;
-  }
-  
-  
+  width: 70%;
+  margin: auto;
+  text-align: center;
+}
 body {
   background-color: #393E46;
 }
 
-h1 {
+h1 ,h3,h6{
   margin: 30px;
   font-family:  cursive;
   text-shadow: 5px 0 #232931;
   font-size: 7rem;
   color: #4ECCA3;
 }
-h3{
-    margin: 30px;
-    font-family: 'Indie Flower', cursive;
-    text-shadow: 5px 0 #232931;
+
+h3{ 
     font-size: 6rem;
-    color: #4ECCA3;
-  }
+}
+
 h6{
-  margin: 30px;
-  font-family: cursive;
-  text-shadow: 5px 0 #232931;
   font-size: 3rem;
-  color: #4ECCA3;
 }
-
-p {
-  font-size: 2rem;
-  color: #4ECCA3;
-  font-family: 'Indie Flower', cursive;
-}
-
-
 
 footer {
   margin-top: 5%;
