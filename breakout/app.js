@@ -1,6 +1,9 @@
 const gridDisplay = document.querySelector(".grid")
-const blockWidth = 140
+const blockWidth = 145
 const blockHeight = 20
+
+const startPosition =[385-145/2,10]
+let userCurrentPosition=startPosition
 
 // create block 
 class Block {
@@ -31,3 +34,38 @@ function addBlock(){
     }
 }
 addBlock()
+
+user = document.createElement("div")
+user.classList.add("block")
+user.style.backgroundColor="black"
+gridDisplay.appendChild(user)
+
+
+function drawUser(){
+    user.style.left=userCurrentPosition[0]+"px"
+    user.style.bottom=userCurrentPosition[1]+"px"
+}
+drawUser()
+
+document.addEventListener("keydown",moveUser)
+function moveUser(e){
+    switch (e.key) {
+        case "ArrowLeft":
+            if(userCurrentPosition[0]>=0)
+            userCurrentPosition[0]-=10
+            break;
+        case "ArrowRight":
+            if(userCurrentPosition[0]<=(770-145))
+            userCurrentPosition[0]+=10
+            break;
+        
+            
+            default:
+                break;
+            }
+drawUser()        
+}
+
+
+
+
