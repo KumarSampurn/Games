@@ -1,5 +1,6 @@
 const gridDisplay = document.querySelector('.grid')
 const scoreDisplay = document.querySelector('#score')
+const resultBox= document.querySelector("#result")
 const blockWidth = 150
 const blockHeight = 30
 const ballDiameter =20
@@ -124,7 +125,7 @@ function checkForCollisions() {
       blocks.splice(i,1)
       changeDirection()   
       score++
-      scoreDisplay.innerHTML = score
+      scoreDisplay.innerHTML = "Score : " +score
       if (blocks.length == 0) {
         scoreDisplay.innerHTML = 'You Win!'
         clearInterval(timerId)
@@ -151,7 +152,8 @@ function checkForCollisions() {
   //game over
   if (ballCurrentPosition[1] <= 0) {
     clearInterval(timerId)
-    scoreDisplay.innerHTML = 'You lose!'
+    scoreDisplay.innerHTML="<h1>You lose !!</h1>"
+    resultBox.innerHTML = '<h6> Score : '+ score+"<h6>"
     document.removeEventListener('keydown', moveUser)
   }
 }
