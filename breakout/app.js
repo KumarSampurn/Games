@@ -6,14 +6,17 @@ const ballDiameter =20
 const boardWidth=770
 const boardHeight=400
 
-let xSpeed = -2
-let ySpeed = 2
 let speed = 2
+let userSpeed =12
+let ballSpeed =10
 
-let xDirection = xSpeed
-let yDirection =ySpeed
+let xDirection = Math.random() > 0.5 ? speed : speed*(-1)
+let yDirection =speed
 
-const startPosition =[385-(130/2),10]
+let noOfRows=4
+let noOfColumns=5
+
+const startPosition =[310,10]
 let userCurrentPosition=startPosition
 
 const ballStartPosition =[385,40]
@@ -33,13 +36,12 @@ class Block {
 }
 
 //all my blocks
-
 const blocks= []
-for(let i =0 ;i < 4 ; i ++)
+for(let i =0 ;i < noOfRows ; i ++)
 {
-    for( let j =0 ; j<5 ; j++)
+    for( let j =0 ; j<noOfColumns ; j++)
     {
-        blocks.push( new Block(10+j*blockWidth, boardHeight - (10 + i*blockHeight)))
+        blocks.push( new Block(10+j*blockWidth, boardHeight - (30+ i*blockHeight)))
     }
 }
 
@@ -73,19 +75,16 @@ function moveUser(e) {
   switch (e.key) {
     case 'ArrowLeft':
       if (userCurrentPosition[0] > 0) {
-        userCurrentPosition[0] -= 10
-        console.log(userCurrentPosition[0] > 0)
-        drawUser()   
+        userCurrentPosition[0] -= userSpeed    
       }
       break
     case 'ArrowRight':
       if (userCurrentPosition[0] < (boardWidth - blockWidth)) {
-        userCurrentPosition[0] += 10
-        console.log(userCurrentPosition[0])
-        drawUser()   
+        userCurrentPosition[0] += userSpeed       
       }
       break
   }
+  drawUser()
 }
 document.addEventListener('keydown', moveUser)
 
@@ -108,7 +107,7 @@ function moveBall() {
     drawBall()
     checkForCollisions()
 }
-timerId = setInterval(moveBall, 30)
+timerId = setInterval(moveBall, ballSpeed)
 
 //check for collisions
 function checkForCollisions() {
