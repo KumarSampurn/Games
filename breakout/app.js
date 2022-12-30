@@ -108,7 +108,13 @@ function moveBall() {
     drawBall()
     checkForCollisions()
 }
-timerId = setInterval(moveBall, ballSpeed)
+document.addEventListener('keypress', function (e) {
+  if (e.key === 'Enter') {
+    timerId = setInterval(moveBall, ballSpeed)
+    resultBox.innerHTML = ""
+  }
+});
+
 
 //check for collisions
 function checkForCollisions() {
