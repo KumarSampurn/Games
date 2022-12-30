@@ -12,3 +12,17 @@
     background-color: blue;
     position :absolute;
 }
+.user{
+    height: 20px;
+    width: 145px;
+    background-color: black;
+    position :absolute;
+}
+
+.ball{
+    height: 20px;
+    width: 20px;
+    background-color: green;
+    position :absolute;
+    border-radius: 50%;
+}
