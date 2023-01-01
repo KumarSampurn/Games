@@ -1,0 +1,22 @@
+div{
+    border:  1px solid ;
+    width: 154px;
+    height: 132px;
+    display: flex;
+    flex-wrap: wrap;
+
+
+}
+
+.commonSquare {
+    width: 20px;
+    height: 20px;
+    background-color: green; 
+}
+
+.playerOne{
+    background-color: rgb(49, 18, 226);
+}
+.playerTwo{
+    background-color: yellow;
+}
