@@ -1,4 +1,6 @@
 const gridDisplay = document.querySelector(".grid")
+let scoreDisplay = document.querySelector("#score")
+let resultDisplay = document.querySelector("#result")
 // adding divs 
 for(let i =0 ; i< 42 ;i ++)
 {
@@ -160,7 +162,10 @@ function diagonalCheck(index){
 
 
 function youWin(){
-    console.log("you win")
+    resultDisplay.innerHTML = ((currentPlayer=="playerOne")? "Player 1" : "Player 2") + " wins"
+    squares.forEach(square => square.removeEventListener("click",markSquare))
+    scoreDisplay.innerHTML = "Refresh to play again"
+    exit()
 }
 
 
@@ -172,4 +177,6 @@ function markSquare(){
     squares[squareId-7].addEventListener("click",markSquare)
 checkConnectFour(this.id)
 changePlayer()
+scoreDisplay.innerHTML = ((currentPlayer=="playerOne")? "Player 1" : "Player 2") + " to play"
+
 }

@@ -1,27 +1,60 @@
 .grid{
-    border:  1px solid black;
-    width: 154px;
-    height: 132px;
-    margin: 1px;
+    /* border:  1px solid black; */
+    width: 690px;
+    height: 554px;
+    margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
-    
-
-
+    background-color: #393E46;
 }
 
 .commonSquare {
     border:  1px solid black;
-    width: 20px;
-    height: 20px;
-    background-color: green; 
-    /* border-radius: 50%; */
+    width: 88px;
+    height: 86px;
+    background-color: #393E46;; 
+    border-radius: 50%;
+    margin: 4px;
 }
 
 .playerOne{
-    background-color: rgb(49, 18, 226);
+    background-color: #CC587D
     
 }
 .playerTwo{
-    background-color: yellow;
+    background-color: #58B3CC;
 }
+
+
+.container {
+width: 70%;
+margin: 0 auto;
+text-align: center;
+}
+
+body {
+background-color: #393E46;
+}
+
+h1 ,h3,h6{
+margin: 25px;
+font-family:  'Lobster',cursive;
+text-shadow: 5px 0 #232931;
+font-size: 5rem;
+color: #4ECCA3;
+}
+
+
+
+h6{
+font-size: 3rem;
+font-family: 'Indie Flower', cursive;
+}
+
+footer {
+margin-top:3%;
+color: #EEEEEE;
+text-align: center;
+font-family: 'Indie Flower', cursive;
+}
+
