@@ -30,10 +30,9 @@ function changePlayer()
 }
 
 function checkConnectFour(index){
-    // console.log(index%7)
 horizontalCheck(index)
 verticalCheck(index)
-// diagonalCheck()
+diagonalCheck(index)
 }
 
 function checkNextFourIndexFrom(index){
@@ -111,23 +110,52 @@ if(index<=20)
 }
 }
 
+function diagonalCheck(index){
+    index=parseInt(index)
+    if(index<=20)
+    {
+        if(index%7<=3){
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            if(squares[index].classList.contains(currentPlayer)&&
+            squares[index+8].classList.contains(currentPlayer)&&
+            squares[index+16].classList.contains(currentPlayer)&&
+            squares[index+24].classList.contains(currentPlayer))
+            {
+                console.log("you win")
+            }
+        }
+        if(index%7>=3){
+            if(squares[index].classList.contains(currentPlayer)&&
+            squares[index+6].classList.contains(currentPlayer)&&
+            squares[index+12].classList.contains(currentPlayer)&&
+            squares[index+18].classList.contains(currentPlayer))
+            {
+                console.log("you win")
+            }
+        }
+    }
+    else
+    {
+        if(index%7<=3){
+            if(squares[index].classList.contains(currentPlayer)&&
+            squares[index-6].classList.contains(currentPlayer)&&
+            squares[index-12].classList.contains(currentPlayer)&&
+            squares[index-18].classList.contains(currentPlayer))
+            {
+                console.log("you win")
+            }
+        }
+        if(index%7>=3){
+            if(squares[index].classList.contains(currentPlayer)&&
+            squares[index-8].classList.contains(currentPlayer)&&
+            squares[index-16].classList.contains(currentPlayer)&&
+            squares[index-24].classList.contains(currentPlayer))
+            {
+                console.log("you win")
+            }
+        }
+    }
+}
 
 
 

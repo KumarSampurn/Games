@@ -1,21 +1,26 @@
-div{
-    border:  1px solid ;
+.grid{
+    border:  1px solid black;
     width: 154px;
     height: 132px;
+    margin: 1px;
     display: flex;
     flex-wrap: wrap;
+    
 
 
 }
 
 .commonSquare {
+    border:  1px solid black;
     width: 20px;
     height: 20px;
     background-color: green; 
+    /* border-radius: 50%; */
 }
 
 .playerOne{
     background-color: rgb(49, 18, 226);
+    
 }
 .playerTwo{
     background-color: yellow;
