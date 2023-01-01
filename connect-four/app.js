@@ -1,24 +1,22 @@
 const gridDisplay = document.querySelector(".grid")
 let scoreDisplay = document.querySelector("#score")
 let resultDisplay = document.querySelector("#result")
-// adding divs 
+
+
+
 for(let i =0 ; i< 42 ;i ++)
 {
-   
-        newElement= document.createElement("div")
-        newElement.classList.add("commonSquare")
-        newElement.setAttribute("id",i)
-        if(i>=35)
-            newElement.addEventListener("click",markSquare)
-        gridDisplay.appendChild(newElement)
-    
-   
+    newElement= document.createElement("div")
+    newElement.classList.add("commonSquare")
+    newElement.setAttribute("id",i)
+    if(i>=35)
+        newElement.addEventListener("click",markSquare)
+    gridDisplay.appendChild(newElement)   
 }
 let squares = Array.from(document.querySelectorAll(".grid div"))
 
 
 let currentPlayer = "playerOne"
-
 function changePlayer()
 {
     if(currentPlayer==="playerOne")
@@ -31,10 +29,18 @@ function changePlayer()
     }
 }
 
+function youWin(){
+    resultDisplay.innerHTML = ((currentPlayer=="playerOne")? "Player 1" : "Player 2") + " wins"
+    squares.forEach(square => square.removeEventListener("click",markSquare))
+    scoreDisplay.innerHTML = "Refresh to play again"
+    exit()
+}
+
+
 function checkConnectFour(index){
-horizontalCheck(index)
-verticalCheck(index)
-diagonalCheck(index)
+    horizontalCheck(index)
+    verticalCheck(index)
+    diagonalCheck(index)
 }
 
 function checkNextFourIndexFrom(index){
@@ -123,7 +129,7 @@ function diagonalCheck(index){
             squares[index+16].classList.contains(currentPlayer)&&
             squares[index+24].classList.contains(currentPlayer))
             {
-                console.log("you win")
+                youWin()
             }
         }
         if(index%7>=3){
@@ -132,7 +138,7 @@ function diagonalCheck(index){
             squares[index+12].classList.contains(currentPlayer)&&
             squares[index+18].classList.contains(currentPlayer))
             {
-                console.log("you win")
+                youWin()
             }
         }
     }
@@ -144,7 +150,7 @@ function diagonalCheck(index){
             squares[index-12].classList.contains(currentPlayer)&&
             squares[index-18].classList.contains(currentPlayer))
             {
-                console.log("you win")
+                youWin()
             }
         }
         if(index%7>=3){
@@ -153,21 +159,11 @@ function diagonalCheck(index){
             squares[index-16].classList.contains(currentPlayer)&&
             squares[index-24].classList.contains(currentPlayer))
             {
-                console.log("you win")
+                youWin()
             }
         }
     }
 }
-
-
-
-function youWin(){
-    resultDisplay.innerHTML = ((currentPlayer=="playerOne")? "Player 1" : "Player 2") + " wins"
-    squares.forEach(square => square.removeEventListener("click",markSquare))
-    scoreDisplay.innerHTML = "Refresh to play again"
-    exit()
-}
-
 
 function markSquare(){
     let squareId = this.id
