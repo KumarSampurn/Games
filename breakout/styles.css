@@ -40,7 +40,7 @@ background-color: #393E46;
 
 h1 ,h3,h6{
 margin: 25px;
-font-family:  'Lobster',cursive;
+font-family:  cursive;
 text-shadow: 5px 0 #232931;
 font-size: 5.5rem;
 color: #4ECCA3;
@@ -50,13 +50,13 @@ color: #4ECCA3;
 
 h6{
 font-size: 3rem;
-font-family: 'Indie Flower', cursive;
+font-family:  cursive;
 }
 
 footer {
 margin-top: 40%;
 color: #EEEEEE;
 text-align: center;
-font-family: 'Indie Flower', cursive;
+font-family:  cursive;
 }
 
