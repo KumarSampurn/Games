@@ -1,4 +1,6 @@
 const gridDisplay = document.querySelector('.grid')
+const scoreDisplay = document.querySelector('#score')
+const resultDisplay = document.querySelector('#result')
 let blockWidth = 20
 let blockHeight = 20
 let boardWidth = 620
@@ -12,6 +14,7 @@ noOfColumns=boardWidth/blockWidth
 
 let currentShooterIndex =  Math.floor(noOfColumns/2)+noOfColumns*(noOfRows-2)
 const aliensRemoved=[]
+let results=0
 
 
 for (let i = 0; i < noOfRows; i++) {
@@ -56,7 +59,8 @@ function remove() {
 blocks[currentShooterIndex].classList.add('user')
 
 
-document.addEventListener('keydown', moveShooter)
+
+
 function moveShooter(e) {
 switch (e.key) {
     case 'ArrowLeft':
@@ -75,6 +79,14 @@ switch (e.key) {
         break
 }}
 
+
+function gameOver(){
+    resultDisplay.innerHTML = results===60 ? "You Won" : "You Lose"
+    clearInterval(invaderId)
+    document.removeEventListener("keydown",moveShooter)
+    document.removeEventListener("keydown",shootLaser)
+    scoreDisplay.innerHTML = "Refresh to play again"
+}
 
 let direction = 1
 let flag=0
@@ -106,19 +118,21 @@ function moveInvader(){
             alienInvaders[i]+=direction
         }
     }
-    
-        
-        draw()
-     
+    alienInvaders.forEach(invader=>{
+       if(blocks[invader].classList.contains("user") || aliensRemoved.length===60)
+       gameOver() 
+    })
+    draw()
 
 }
 
 function shootLaser(e)
 {
+   
     let LaserId
     let laserCurrentIndex=currentShooterIndex
     function moveLaser(){
-        if(laserCurrentIndex<=0)
+        if(laserCurrentIndex <= 0)
         {
             clearInterval(LaserId)
             return
@@ -134,8 +148,7 @@ function shootLaser(e)
             const alienRemoved = alienInvaders.indexOf(laserCurrentIndex)
             aliensRemoved.push(alienRemoved)
             results++
-            resultsDisplay.innerHTML = results
-            console.log(aliensRemoved)
+            
             return
         }
         blocks[laserCurrentIndex].classList.remove("laser")
@@ -146,11 +159,25 @@ function shootLaser(e)
 
     switch(e.key){
         case 'ArrowUp':
-            LaserId=setInterval(moveLaser,100)
+            setTimeout(()=>{LaserId=setInterval(moveLaser,300)},100)
+            // LaserId=setInterval(moveLaser,300)
+            
 
     }
+   
 }
-document.addEventListener("keydown", shootLaser)
 
 
-setInterval(moveInvader,99)
+let invaderId=null
+
+
+//press enter to start
+document.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        invaderId=setInterval(moveInvader,150)
+        document.addEventListener("keydown", shootLaser)
+        document.addEventListener('keydown', moveShooter)
+        scoreDisplay.innerHTML = "<br>"
+    }
+  });
+  

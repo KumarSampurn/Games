@@ -1,19 +1,22 @@
 .grid{
-    border : solid 1px black;
+    border : solid 1px ;
     display: flex;
     flex-wrap: wrap;
+    margin: auto;
 }
 
 .block{
-    
-    border : solid 1px black;   
+    border : solid 1px #393E46;   
 }
 
 .invader{
+    border-radius: 50%;
     background-color: green;
 }
 
 .user{
+    border-top-left-radius: 50%;
+    border-top-right-radius:50% ;
     background-color: blue;
 }
 .laser {
@@ -22,6 +25,35 @@
 .boom{
     background-color: aqua;
 }
-.boom2{
-    background-color: red;
+
+.container {
+width: 70%;
+margin: auto;
+text-align: center;
 }
+body {
+background-color: #393E46;
+}
+
+h1 ,h3,h6{
+margin: 25px;
+font-family:  'Lobster',cursive;
+text-shadow: 5px 0 #232931;
+font-size: 5.5rem;
+color: #4ECCA3;
+}
+
+
+
+h6{
+font-size: 3rem;
+font-family: 'Indie Flower', cursive;
+}
+
+footer {
+margin-top: 10%;
+color: #EEEEEE;
+text-align: center;
+font-family: 'Indie Flower', cursive;
+}
+
