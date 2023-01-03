@@ -1,0 +1,27 @@
+.grid{
+    border : solid 1px black;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.block{
+    
+    border : solid 1px black;   
+}
+
+.invader{
+    background-color: green;
+}
+
+.user{
+    background-color: blue;
+}
+.laser {
+	background-color: orange;
+}
+.boom{
+    background-color: aqua;
+}
+.boom2{
+    background-color: red;
+}
