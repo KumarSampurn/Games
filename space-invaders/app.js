@@ -15,6 +15,9 @@ noOfColumns=boardWidth/blockWidth
 let currentShooterIndex =  Math.floor(noOfColumns/2)+noOfColumns*(noOfRows-2)
 const aliensRemoved=[]
 let results=0
+let invaderId=null
+let direction = 1
+let flag=0
 
 
 for (let i = 0; i < noOfRows; i++) {
@@ -36,31 +39,28 @@ for (let i = 0; i < 15; i++) {
     alienInvaders.push(i+62)
     alienInvaders.push(i+93)
 }
-let blocks = document.querySelectorAll('.block')
 
+
+// draw the alien invaders
+let blocks = document.querySelectorAll('.block')
 function draw() {
     for (let i = 0; i < alienInvaders.length; i++) {
       if(!aliensRemoved.includes(i)) {
         blocks[alienInvaders[i]].classList.add('invader')
       }
     }
-  }
-
+}
 draw()
 
 function remove() {
     for (let i = 0; i < alienInvaders.length; i++) {
       blocks[alienInvaders[i]].classList.remove('invader')
     }
-  }
-
-
+}
 
 blocks[currentShooterIndex].classList.add('user')
 
-
-
-
+// move the shooter along a line
 function moveShooter(e) {
 switch (e.key) {
     case 'ArrowLeft':
@@ -79,7 +79,6 @@ switch (e.key) {
         break
 }}
 
-
 function gameOver(){
     resultDisplay.innerHTML = results===60 ? "You Won" : "You Lose"
     clearInterval(invaderId)
@@ -88,8 +87,8 @@ function gameOver(){
     scoreDisplay.innerHTML = "Refresh to play again"
 }
 
-let direction = 1
-let flag=0
+
+// move the alien invaders
 function moveInvader(){
     flag=0
     let leftEdge = alienInvaders[0]%noOfColumns===0
@@ -126,6 +125,7 @@ function moveInvader(){
 
 }
 
+//shoot at aliens
 function shootLaser(e)
 {
    
@@ -160,16 +160,10 @@ function shootLaser(e)
     switch(e.key){
         case 'ArrowUp':
             setTimeout(()=>{LaserId=setInterval(moveLaser,300)},100)
-            // LaserId=setInterval(moveLaser,300)
-            
-
+            break
     }
    
 }
-
-
-let invaderId=null
-
 
 //press enter to start
 document.addEventListener('keypress', (e) => {
