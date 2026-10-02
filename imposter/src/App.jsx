@@ -9,6 +9,7 @@ const STORAGE_KEY = 'imposter-player-count';
 const NAMES_STORAGE_KEY = 'imposter-player-names';
 const MODE_STORAGE_KEY = 'imposter-mode';
 const IMPOSTER_COUNT_STORAGE_KEY = 'imposter-count';
+const IMPOSTER_HISTORY_STORAGE_KEY = 'imposter-history';
 const DEFAULT_MODE = 'easy';
 const DEFAULT_IMPOSTERS = 1;
 
@@ -23,8 +24,31 @@ function randomReference(mode, previousWords = []) {
   return availableReferences[Math.floor(Math.random() * availableReferences.length)].word;
 }
 
-function newRound(playerNames, mode, previousWord = '', imposterCount = DEFAULT_IMPOSTERS) {
-  return { playerNames, playerCount: playerNames.length, mode, secretWord: randomReference(mode, [previousWord]), imposters: shuffle(Array.from({ length: playerNames.length }, (_, index) => index + 1)).slice(0, imposterCount), currentPlayer: 1, viewed: false, revealed: false };
+function normalizedName(name) {
+  return name.trim().toLowerCase();
+}
+
+function weightedImposters(playerNames, imposterCount, history) {
+  const counts = playerNames.map((name) => history[normalizedName(name)] || 0);
+  const highestCount = Math.max(...counts, 0);
+  const candidates = playerNames.map((name, index) => ({ playerNumber: index + 1, weight: highestCount - counts[index] + 1 }));
+  const selected = [];
+
+  while (selected.length < imposterCount && candidates.length) {
+    const totalWeight = candidates.reduce((total, candidate) => total + candidate.weight, 0);
+    let threshold = Math.random() * totalWeight;
+    const selectedIndex = candidates.findIndex((candidate) => {
+      threshold -= candidate.weight;
+      return threshold < 0;
+    });
+    selected.push(candidates.splice(selectedIndex < 0 ? candidates.length - 1 : selectedIndex, 1)[0].playerNumber);
+  }
+
+  return selected;
+}
+
+function newRound(playerNames, mode, previousWord = '', imposterCount = DEFAULT_IMPOSTERS, history = {}) {
+  return { playerNames, playerCount: playerNames.length, mode, secretWord: randomReference(mode, [previousWord]), imposters: weightedImposters(playerNames, imposterCount, history), currentPlayer: 1, viewed: false, revealed: false };
 }
 
 function shuffle(items) {
@@ -77,6 +101,7 @@ export default function App() {
   const [playerCount, setPlayerCount] = useState(() => { const saved = Number(sessionStorage.getItem(STORAGE_KEY)); return saved >= MIN_PLAYERS && saved <= MAX_PLAYERS ? saved : DEFAULT_PLAYERS; });
   const [playerNames, setPlayerNames] = useState(() => { const savedNames = JSON.parse(sessionStorage.getItem(NAMES_STORAGE_KEY) || 'null'); return Array.from({ length: playerCount }, (_, index) => savedNames?.[index] || `Player ${index + 1}`); });
   const [imposterCount, setImposterCount] = useState(() => { const saved = Number(sessionStorage.getItem(IMPOSTER_COUNT_STORAGE_KEY)); return saved >= 1 && saved <= maxImposters(playerCount) ? saved : DEFAULT_IMPOSTERS; });
+  const [imposterHistory, setImposterHistory] = useState(() => JSON.parse(sessionStorage.getItem(IMPOSTER_HISTORY_STORAGE_KEY) || '{}'));
   const [mode, setMode] = useState(() => sessionStorage.getItem(MODE_STORAGE_KEY) || DEFAULT_MODE);
   const [screen, setScreen] = useState('setup');
   const [round, setRound] = useState(null);
@@ -84,16 +109,18 @@ export default function App() {
   useEffect(() => { sessionStorage.setItem(STORAGE_KEY, String(playerCount)); }, [playerCount]);
   useEffect(() => { sessionStorage.setItem(NAMES_STORAGE_KEY, JSON.stringify(playerNames)); }, [playerNames]);
   useEffect(() => { sessionStorage.setItem(IMPOSTER_COUNT_STORAGE_KEY, String(imposterCount)); }, [imposterCount]);
+  useEffect(() => { sessionStorage.setItem(IMPOSTER_HISTORY_STORAGE_KEY, JSON.stringify(imposterHistory)); }, [imposterHistory]);
   useEffect(() => { sessionStorage.setItem(MODE_STORAGE_KEY, mode); }, [mode]);
   const updatePlayerCount = (value) => { const nextCount = Math.max(MIN_PLAYERS, Math.min(MAX_PLAYERS, value)); setPlayerCount(nextCount); setImposterCount((current) => Math.min(current, maxImposters(nextCount))); setPlayerNames((current) => Array.from({ length: nextCount }, (_, index) => current[index] || `Player ${index + 1}`)); };
   const updateImposterCount = (value) => setImposterCount(Math.max(1, Math.min(maxImposters(playerCount), value)));
   const updatePlayerName = (index, name) => setPlayerNames((current) => current.map((currentName, nameIndex) => nameIndex === index ? name : currentName));
   const shufflePlayers = () => setPlayerNames((current) => shuffle(current));
-  const startRound = () => { const names = playerNames.map((name) => name.trim()); setPlayerNames(names); const nextRound = newRound(names, mode, lastWord, imposterCount); setLastWord(nextRound.secretWord); setRound(nextRound); setScreen('roles'); };
+  const startRound = () => { const names = shuffle(playerNames.map((name) => name.trim())); setPlayerNames(names); const nextRound = newRound(names, mode, lastWord, imposterCount, imposterHistory); setLastWord(nextRound.secretWord); setRound(nextRound); setScreen('roles'); };
   const revealRole = () => setRound((current) => ({ ...current, revealed: !current.revealed, viewed: true }));
   const skipWord = () => setRound((current) => current.currentPlayer === 1 && !current.imposters.includes(current.currentPlayer) ? { ...current, secretWord: randomReference(current.mode, [current.secretWord, lastWord]), viewed: false, revealed: false } : current);
   const nextPlayer = () => { if (!round.viewed || round.revealed) return; if (round.currentPlayer === round.playerCount) setScreen('playing'); else setRound((current) => ({ ...current, currentPlayer: current.currentPlayer + 1, viewed: false, revealed: false })); };
   const backToSetup = () => { setRound(null); setScreen('setup'); };
-  const playAgain = () => { const nextRound = newRound(round.playerNames, round.mode, lastWord, round.imposters.length); setLastWord(nextRound.secretWord); setRound(nextRound); setScreen('roles'); };
-  return <div className="app-shell"><Header />{screen === 'setup' && <Setup playerCount={playerCount} playerNames={playerNames} imposterCount={imposterCount} mode={mode} onModeChange={setMode} onPlayerCountChange={updatePlayerCount} onImposterCountChange={updateImposterCount} onPlayerNameChange={updatePlayerName} onShuffle={shufflePlayers} onStart={startRound} />}{screen === 'roles' && round && <RoleDistribution round={round} onReveal={revealRole} onSkip={skipWord} onNext={nextPlayer} />}{screen === 'playing' && <GameInProgress onReveal={() => setScreen('result')} />}{screen === 'result' && round && <Result round={round} onPlayAgain={playAgain} onSetup={backToSetup} />}</div>;
+  const revealResult = () => { if (!round) return; setImposterHistory((current) => round.imposters.reduce((history, playerNumber) => { const name = normalizedName(round.playerNames[playerNumber - 1]); return { ...history, [name]: (history[name] || 0) + 1 }; }, current)); setScreen('result'); };
+  const playAgain = () => { const names = shuffle(round.playerNames); setPlayerNames(names); const nextRound = newRound(names, round.mode, lastWord, round.imposters.length, imposterHistory); setLastWord(nextRound.secretWord); setRound(nextRound); setScreen('roles'); };
+  return <div className="app-shell"><Header />{screen === 'setup' && <Setup playerCount={playerCount} playerNames={playerNames} imposterCount={imposterCount} mode={mode} onModeChange={setMode} onPlayerCountChange={updatePlayerCount} onImposterCountChange={updateImposterCount} onPlayerNameChange={updatePlayerName} onShuffle={shufflePlayers} onStart={startRound} />}{screen === 'roles' && round && <RoleDistribution round={round} onReveal={revealRole} onSkip={skipWord} onNext={nextPlayer} />}{screen === 'playing' && <GameInProgress onReveal={revealResult} />}{screen === 'result' && round && <Result round={round} onPlayAgain={playAgain} onSetup={backToSetup} />}</div>;
 }
