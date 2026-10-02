@@ -10,6 +10,7 @@ const NAMES_STORAGE_KEY = 'imposter-player-names';
 const MODE_STORAGE_KEY = 'imposter-mode';
 const IMPOSTER_COUNT_STORAGE_KEY = 'imposter-count';
 const IMPOSTER_HISTORY_STORAGE_KEY = 'imposter-history';
+const REFERENCE_HISTORY_STORAGE_KEY = 'imposter-reference-history';
 const DEFAULT_MODE = 'easy';
 const DEFAULT_IMPOSTERS = 1;
 
@@ -17,11 +18,19 @@ function maxImposters(playerCount) {
   return Math.max(1, Math.floor((playerCount - 1) / 2));
 }
 
-function randomReference(mode, previousWords = []) {
+function randomReference(mode, previousWords = [], history = {}) {
   const references = mode === 'extreme' ? extremeWords : easyWords.map((word) => ({ word, category: 'everyday' }));
   const excludedWords = Array.isArray(previousWords) ? previousWords : [previousWords];
   const availableReferences = references.filter((reference) => !excludedWords.includes(reference.word));
-  return availableReferences[Math.floor(Math.random() * availableReferences.length)].word;
+  const highestCount = Math.max(...availableReferences.map((reference) => history[reference.word] || 0), 0);
+  const weightedReferences = availableReferences.map((reference) => ({ reference, weight: highestCount - (history[reference.word] || 0) + 1 }));
+  const totalWeight = weightedReferences.reduce((total, reference) => total + reference.weight, 0);
+  let threshold = Math.random() * totalWeight;
+  const selected = weightedReferences.find((reference) => {
+    threshold -= reference.weight;
+    return threshold < 0;
+  });
+  return (selected || weightedReferences[weightedReferences.length - 1]).reference.word;
 }
 
 function normalizedName(name) {
@@ -47,8 +56,8 @@ function weightedImposters(playerNames, imposterCount, history) {
   return selected;
 }
 
-function newRound(playerNames, mode, previousWord = '', imposterCount = DEFAULT_IMPOSTERS, history = {}) {
-  return { playerNames, playerCount: playerNames.length, mode, secretWord: randomReference(mode, [previousWord]), imposters: weightedImposters(playerNames, imposterCount, history), currentPlayer: 1, viewed: false, revealed: false };
+function newRound(playerNames, mode, previousWord = '', imposterCount = DEFAULT_IMPOSTERS, imposterHistory = {}, referenceHistory = {}) {
+  return { playerNames, playerCount: playerNames.length, mode, secretWord: randomReference(mode, [previousWord], referenceHistory), imposters: weightedImposters(playerNames, imposterCount, imposterHistory), currentPlayer: 1, viewed: false, revealed: false };
 }
 
 function shuffle(items) {
@@ -102,6 +111,7 @@ export default function App() {
   const [playerNames, setPlayerNames] = useState(() => { const savedNames = JSON.parse(sessionStorage.getItem(NAMES_STORAGE_KEY) || 'null'); return Array.from({ length: playerCount }, (_, index) => savedNames?.[index] || `Player ${index + 1}`); });
   const [imposterCount, setImposterCount] = useState(() => { const saved = Number(sessionStorage.getItem(IMPOSTER_COUNT_STORAGE_KEY)); return saved >= 1 && saved <= maxImposters(playerCount) ? saved : DEFAULT_IMPOSTERS; });
   const [imposterHistory, setImposterHistory] = useState(() => JSON.parse(sessionStorage.getItem(IMPOSTER_HISTORY_STORAGE_KEY) || '{}'));
+  const [referenceHistory, setReferenceHistory] = useState(() => JSON.parse(sessionStorage.getItem(REFERENCE_HISTORY_STORAGE_KEY) || '{}'));
   const [mode, setMode] = useState(() => sessionStorage.getItem(MODE_STORAGE_KEY) || DEFAULT_MODE);
   const [screen, setScreen] = useState('setup');
   const [round, setRound] = useState(null);
@@ -110,17 +120,18 @@ export default function App() {
   useEffect(() => { sessionStorage.setItem(NAMES_STORAGE_KEY, JSON.stringify(playerNames)); }, [playerNames]);
   useEffect(() => { sessionStorage.setItem(IMPOSTER_COUNT_STORAGE_KEY, String(imposterCount)); }, [imposterCount]);
   useEffect(() => { sessionStorage.setItem(IMPOSTER_HISTORY_STORAGE_KEY, JSON.stringify(imposterHistory)); }, [imposterHistory]);
+  useEffect(() => { sessionStorage.setItem(REFERENCE_HISTORY_STORAGE_KEY, JSON.stringify(referenceHistory)); }, [referenceHistory]);
   useEffect(() => { sessionStorage.setItem(MODE_STORAGE_KEY, mode); }, [mode]);
   const updatePlayerCount = (value) => { const nextCount = Math.max(MIN_PLAYERS, Math.min(MAX_PLAYERS, value)); setPlayerCount(nextCount); setImposterCount((current) => Math.min(current, maxImposters(nextCount))); setPlayerNames((current) => Array.from({ length: nextCount }, (_, index) => current[index] || `Player ${index + 1}`)); };
   const updateImposterCount = (value) => setImposterCount(Math.max(1, Math.min(maxImposters(playerCount), value)));
   const updatePlayerName = (index, name) => setPlayerNames((current) => current.map((currentName, nameIndex) => nameIndex === index ? name : currentName));
   const shufflePlayers = () => setPlayerNames((current) => shuffle(current));
-  const startRound = () => { const names = shuffle(playerNames.map((name) => name.trim())); setPlayerNames(names); const nextRound = newRound(names, mode, lastWord, imposterCount, imposterHistory); setLastWord(nextRound.secretWord); setRound(nextRound); setScreen('roles'); };
+  const startRound = () => { const names = shuffle(playerNames.map((name) => name.trim())); setPlayerNames(names); const nextRound = newRound(names, mode, lastWord, imposterCount, imposterHistory, referenceHistory); setLastWord(nextRound.secretWord); setRound(nextRound); setScreen('roles'); };
   const revealRole = () => setRound((current) => ({ ...current, revealed: !current.revealed, viewed: true }));
-  const skipWord = () => setRound((current) => current.currentPlayer === 1 && !current.imposters.includes(current.currentPlayer) ? { ...current, secretWord: randomReference(current.mode, [current.secretWord, lastWord]), viewed: false, revealed: false } : current);
+  const skipWord = () => setRound((current) => current.currentPlayer === 1 && !current.imposters.includes(current.currentPlayer) ? { ...current, secretWord: randomReference(current.mode, [current.secretWord, lastWord], referenceHistory), viewed: false, revealed: false } : current);
   const nextPlayer = () => { if (!round.viewed || round.revealed) return; if (round.currentPlayer === round.playerCount) setScreen('playing'); else setRound((current) => ({ ...current, currentPlayer: current.currentPlayer + 1, viewed: false, revealed: false })); };
   const backToSetup = () => { setRound(null); setScreen('setup'); };
-  const revealResult = () => { if (!round) return; setImposterHistory((current) => round.imposters.reduce((history, playerNumber) => { const name = normalizedName(round.playerNames[playerNumber - 1]); return { ...history, [name]: (history[name] || 0) + 1 }; }, current)); setScreen('result'); };
-  const playAgain = () => { const names = shuffle(round.playerNames); setPlayerNames(names); const nextRound = newRound(names, round.mode, lastWord, round.imposters.length, imposterHistory); setLastWord(nextRound.secretWord); setRound(nextRound); setScreen('roles'); };
+  const revealResult = () => { if (!round) return; setImposterHistory((current) => round.imposters.reduce((history, playerNumber) => { const name = normalizedName(round.playerNames[playerNumber - 1]); return { ...history, [name]: (history[name] || 0) + 1 }; }, current)); setReferenceHistory((current) => ({ ...current, [round.secretWord]: (current[round.secretWord] || 0) + 1 })); setScreen('result'); };
+  const playAgain = () => { const names = shuffle(round.playerNames); setPlayerNames(names); const nextRound = newRound(names, round.mode, lastWord, round.imposters.length, imposterHistory, referenceHistory); setLastWord(nextRound.secretWord); setRound(nextRound); setScreen('roles'); };
   return <div className="app-shell"><Header />{screen === 'setup' && <Setup playerCount={playerCount} playerNames={playerNames} imposterCount={imposterCount} mode={mode} onModeChange={setMode} onPlayerCountChange={updatePlayerCount} onImposterCountChange={updateImposterCount} onPlayerNameChange={updatePlayerName} onShuffle={shufflePlayers} onStart={startRound} />}{screen === 'roles' && round && <RoleDistribution round={round} onReveal={revealRole} onSkip={skipWord} onNext={nextPlayer} />}{screen === 'playing' && <GameInProgress onReveal={revealResult} />}{screen === 'result' && round && <Result round={round} onPlayAgain={playAgain} onSetup={backToSetup} />}</div>;
 }
