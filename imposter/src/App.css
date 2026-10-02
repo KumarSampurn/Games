@@ -1,5 +1,6 @@
 .app-shell { min-height: 100vh; width: 100%; max-width: 760px; margin: 0 auto; padding: 0 20px; display: flex; flex-direction: column; background: #393e46; overflow: hidden; }
 .app-header { height: 64px; display: flex; align-items: center; border-bottom: 1px solid rgba(238,238,238,.12); }
+.collection-label { color: rgba(238,238,238,.55); font-size: 12px; letter-spacing: 1.5px; }
 .brand { display: inline-flex; align-items: center; gap: 9px; padding: 0; color: #cc587d; border: 0; background: transparent; font: 700 18px 'Trebuchet MS', sans-serif; letter-spacing: 1px; cursor: pointer; }
 .brand-mark { width: 26px; height: 26px; display: grid; place-items: center; border: 2px solid #cc587d; border-radius: 50%; font-size: 17px; }
 .screen { width: 100%; flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; animation: rise .3s ease both; }

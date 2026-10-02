@@ -17,8 +17,8 @@ function newRound(playerNames, previousWord = '') {
   return { playerNames, playerCount: playerNames.length, secretWord: randomWord(previousWord), imposter: Math.floor(Math.random() * playerNames.length) + 1, currentPlayer: 1, viewed: false, revealed: false };
 }
 
-function Header({ onHome }) {
-  return <header className="app-header"><button className="brand" onClick={onHome} aria-label="Back to setup"><span className="brand-mark">?</span><span>IMPOSTER</span></button></header>;
+function Header() {
+  return <header className="app-header"><span className="collection-label">EPSILONCODES GAMES</span></header>;
 }
 
 function Setup({ playerCount, playerNames, onPlayerCountChange, onPlayerNameChange, onStart }) {
@@ -62,5 +62,5 @@ export default function App() {
   const nextPlayer = () => { if (!round.viewed || round.revealed) return; if (round.currentPlayer === round.playerCount) setScreen('playing'); else setRound((current) => ({ ...current, currentPlayer: current.currentPlayer + 1, viewed: false, revealed: false })); };
   const backToSetup = () => { setRound(null); setScreen('setup'); };
   const playAgain = () => { const nextRound = newRound(round.playerNames, lastWord); setLastWord(nextRound.secretWord); setRound(nextRound); setScreen('roles'); };
-  return <div className="app-shell"><Header onHome={backToSetup} />{screen === 'setup' && <Setup playerCount={playerCount} playerNames={playerNames} onPlayerCountChange={updatePlayerCount} onPlayerNameChange={updatePlayerName} onStart={startRound} />}{screen === 'roles' && round && <RoleDistribution round={round} onReveal={revealRole} onNext={nextPlayer} />}{screen === 'playing' && <GameInProgress onReveal={() => setScreen('result')} />}{screen === 'result' && round && <Result round={round} onPlayAgain={playAgain} onSetup={backToSetup} />}</div>;
+  return <div className="app-shell"><Header />{screen === 'setup' && <Setup playerCount={playerCount} playerNames={playerNames} onPlayerCountChange={updatePlayerCount} onPlayerNameChange={updatePlayerName} onStart={startRound} />}{screen === 'roles' && round && <RoleDistribution round={round} onReveal={revealRole} onNext={nextPlayer} />}{screen === 'playing' && <GameInProgress onReveal={() => setScreen('result')} />}{screen === 'result' && round && <Result round={round} onPlayAgain={playAgain} onSetup={backToSetup} />}</div>;
 }
