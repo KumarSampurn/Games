@@ -52,6 +52,7 @@ h2 { font-size: clamp(30px, 9vw, 48px); line-height: 1.08; }
 .imposter-value { color: #cc587d; font-size: clamp(29px, 8vw, 40px); }
 .card-hint { opacity: .6; }
 .next-button, .reveal-button { width: min(100%, 360px); }
+.skip-button { min-height: 42px; margin: -8px 0 14px; padding: 8px 14px; font-size: 14px; }
 .game-screen, .result-screen { justify-content: center; padding: 40px 0; }
 .screen-copy { margin: 12px 0 28px; color: rgba(238,238,238,.7); font-size: 18px; }
 .reveal-button { margin-top: 10px; }
