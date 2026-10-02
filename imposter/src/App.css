@@ -24,6 +24,13 @@ h2 { font-size: clamp(30px, 9vw, 48px); line-height: 1.08; }
 .name-field input::placeholder { color: rgba(238,238,238,.4); }
 .name-field input:focus { border-color: #cc587d; box-shadow: 0 0 0 2px rgba(204,88,125,.18); }
 .name-field.has-error input { border-color: #cc587d; }
+.shuffle-button { display: block; margin: 14px 0 0 auto; padding: 0; border: 0; color: #cc587d; background: transparent; font: 600 14px 'Trebuchet MS', sans-serif; cursor: pointer; }
+.shuffle-button:hover, .shuffle-button:focus-visible { color: #eeeeee; }
+.mode-section { margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(238,238,238,.1); }
+.mode-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; padding: 4px; border-radius: 8px; background: #393e46; }
+.mode-switch button { min-height: 38px; border: 0; border-radius: 6px; color: rgba(238,238,238,.65); background: transparent; font: 600 14px 'Trebuchet MS', sans-serif; text-transform: uppercase; letter-spacing: .6px; cursor: pointer; }
+.mode-switch button.is-selected { color: #232931; background: #cc587d; }
+.mode-helper { margin: 8px 0 0; color: rgba(238,238,238,.55); font-size: 13px; }
 .validation-message { margin: 12px 0 0 32px; color: #e998a9; font-size: 14px; }
 .primary-button, .secondary-button { min-height: 52px; padding: 12px 20px; border-radius: 8px; border: 0; font: 600 17px 'Trebuchet MS', sans-serif; cursor: pointer; transition: transform .2s, background-color .2s, opacity .2s; }
 .primary-button { background: #cc587d; color: #232931; box-shadow: 0 3px 0 #893c57; }
@@ -41,7 +48,7 @@ h2 { font-size: clamp(30px, 9vw, 48px); line-height: 1.08; }
 .role-card.is-revealed { background: #eeeeee; color: #232931; animation: flip-in .3s ease; }
 .card-kicker, .card-hint { font-size: 12px; letter-spacing: 1.3px; text-transform: uppercase; }
 .card-kicker { opacity: .7; }
-.role-value { min-height: 72px; display: grid; place-items: center; font-size: clamp(34px, 10vw, 48px); font-weight: 700; text-transform: uppercase; overflow-wrap: anywhere; }
+.role-value { min-height: 72px; display: grid; place-items: center; max-width: 100%; font-size: clamp(30px, 9vw, 48px); font-weight: 700; line-height: 1.05; text-transform: uppercase; overflow-wrap: anywhere; }
 .imposter-value { color: #cc587d; font-size: clamp(29px, 8vw, 40px); }
 .card-hint { opacity: .6; }
 .next-button, .reveal-button { width: min(100%, 360px); }
